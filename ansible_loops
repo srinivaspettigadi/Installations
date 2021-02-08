@@ -23,3 +23,104 @@
                state: present
             with_items: '{{packages}}'
               
+
+
+==============================================
+
+-
+    name: 'Print list of fruits'
+    hosts: localhost
+    vars:
+        fruits:
+            - Apple
+            - Banana
+            - Grapes
+            - Orange
+    tasks:
+        -  
+           command: 'echo "{{item}}" '
+           with_items: '{{fruits}}'
+        
+
+Update the playbook with a play to Execute a script on all web server nodes. The script is located at /tmp/install_script.sh
+======================================================================================================================================
+[
+    {
+    "hosts": "web_nodes",
+    "tasks": [
+       {
+        "script": "/tmp/install_script.sh"
+       }
+     ]
+    }
+]
+
+
+============================================================================================================================================
+Update the playbook to add a new task to start httpd services on all web nodes
+-
+    name: 'Execute a script on all web server nodes'
+    hosts: web_nodes
+    tasks:
+        -
+            name: 'Execute a script on all web server nodes'
+            script: /tmp/install_script.sh
+        -
+            name: 'start httpd service'
+            service: 'name=httpd state=started'
+            
+            
+===================================================================================================================================================
+Update the playbook to add a new task in the beginning to add an entry into /etc/resolv.conf file for hosts. The line to be added is nameserver 10.1.250.10
+
+-
+    name: 'Execute a script on all web server nodes'
+    hosts: web_nodes
+    tasks:
+        -
+            name: 'adding new line to playbook'
+            lineinfile:
+               path: /etc/resolv.conf
+               line: nameserver 10.1.250.10
+            
+        -
+            name: 'Execute a script'
+            script: /tmp/install_script.sh
+        -
+            name: 'Start httpd service'
+            service:
+                name: httpd
+                state: present
+
+============================================================================================================================
+Task
+1. Adding the line in /etc/resolv.conf file using the lineinfile module
+2. Creating a new user using user module
+3. execute a sample script using the script module
+4. adding the new argument for the playbook that httpd service is started using the service module
+-
+    name: 'Execute a script on all web server nodes and start httpd service'
+    hosts: web_nodes
+    tasks:
+        -
+            name: 'Update entry into /etc/resolv.conf'
+            lineinfile:
+                path: /etc/resolv.conf
+                line: 'nameserver 10.1.250.10'
+
+        - 
+            name: 'creating the user'
+            user: 
+             name: web_user
+             uid: 1040
+             group: developers
+        -
+            name: 'Execute a script'
+            script: /tmp/install_script.sh
+        -
+            name: 'Start httpd service'
+            service:
+                name: httpd
+                state: present
+
+
