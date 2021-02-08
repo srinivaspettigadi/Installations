@@ -1,0 +1,46 @@
+
+https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04
+
+Step 1 – Installing Nginx
+
+sudo apt update
+sudo apt install nginx
+
+Step 2 – Adjusting the Firewall
+
+List the application configurations that ufw knows how to work with by typing:
+sudo ufw app list
+
+You should get a listing of the application profiles:
+
+Output
+Available applications:
+  Nginx Full
+  Nginx HTTP
+  Nginx HTTPS
+  OpenSSH
+  
+  
+  Uncomplicated Firewall (UFW) is a program for managing a netfilter firewall designed to be easy to use. 
+  It uses a command-line interface consisting of a small number of simple commands, and uses iptables for configuration. 
+  UFW is available by default in all Ubuntu installations after 8.04 LTS.
+  
+  Few commands on ufw
+  --------------------
+  sudo ufw app list
+  sudo ufw allow 'Nginx HTTP'
+  sudo ufw status
+  
+  After installaling Nginx , check the process
+  ---------------------------------------------
+  systemctl status nginx
+  systemctl start nginx
+  systemctl stop nginx
+  
+  
+  
+  
+  
+  
+  
+  
