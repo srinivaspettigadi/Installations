@@ -38,6 +38,54 @@ Available applications:
   systemctl stop nginx
   
   
+  Important configuration files in nginx
+  ---------------------------------------
+  html files in /var/www/html
+  /etc/nginx/sites-available --> configuration files
+  
+  Getting the partail response using the GET protocol like
+  
+  curl --header "Range: bytes=0-10" 192.168.0.105/test.txt
+
+GIVES ONLY THE HEADERS
+-------------------------
+curl -I 192.168.0.105
+
+HTTP/1.1 200 OK
+Server: nginx/1.18.0 (Ubuntu)
+Date: Mon, 08 Feb 2021 11:14:27 GMT
+Content-Type: text/html
+Content-Length: 612
+Last-Modified: Mon, 08 Feb 2021 09:39:36 GMT
+Connection: keep-alive
+ETag: "602106d8-264"
+Accept-Ranges: bytes
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
