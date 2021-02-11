@@ -25,6 +25,11 @@ These are files in jboss server
 standalone.sh (Unix)
 standalone.conf.sh (Unix)
 
+STARTING JBOSS
+-------------------
+/home/srinivas/Downloads/jboss7/jboss-as-7.1.1.Final/bin/standalone.sh     is used to start to standalone server.
+/home/srinivas/Downloads/jboss7/jboss-as-7.1.1.Final/bin/run.sh            is used to start to multiple instances. 
+
 Donwload the Jboss
 ---------------------
 https://jbossas.jboss.org/downloads
@@ -51,18 +56,28 @@ Issue in starting jboss
 -------------------------
 https://stackoverflow.com/questions/12975357/error-could-not-create-the-java-virtual-machine-jboss7-as-server-startup-issue  
 
+Important Configuration Files
+-------------------------------
+Domain.xml  --> is the configuration file which take care of multiple instances.
 
+path --> /home/srinivas/Downloads/jboss7/jboss-as-7.1.1.Final/domain/configuration/domain.xml
 
-
-
-
-
-
-
-
-
-
-
+We have server-groups inside the domain.xml file where we have 2 server groups --> main-server-group, other-server-group
+ 
+<server-groups>
+        <server-group name="main-server-group" profile="full">
+            <jvm name="default">
+                <heap size="64m" max-size="512m"/>
+            </jvm>
+            <socket-binding-group ref="full-sockets"/>
+        </server-group>
+        <server-group name="other-server-group" profile="full-ha">
+            <jvm name="default">
+                <heap size="64m" max-size="512m"/>
+            </jvm>
+            <socket-binding-group ref="ha-sockets"/>
+        </server-group>
+    </server-groups>
 
 
 
