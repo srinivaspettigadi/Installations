@@ -1,0 +1,72 @@
+You can boot JBOSS application server in 2 modes
+
+1.Standalone mode
+2. Managed domain mode
+
+When you want to deploy applications and change any configuration, it is difficult to maintain all on those on individula servers when they are in standalone mode.
+
+Installation Directory
+-----------------------
+
+D:\FMW\Jboss Liferay\jboss-eap-7.0 is my Jboss installation director
+
+D:\FMW\Jboss Liferay\jboss-eap-7.0\standalone 
+
+D:\FMW\Jboss Liferay\jboss-eap-7.0\standalone\configuration
+standalone.xml --> it is similar to config.xml in standalone servers
+
+Log file name
+--------------
+D:\FMW\Jboss Liferay\jboss-eap-7.0\standalone \log
+
+D:\FMW\Jboss Liferay\jboss-eap-7.0\bin
+
+These are files in jboss server
+standalone.sh (Unix)
+standalone.conf.sh (Unix)
+
+Donwload the Jboss
+---------------------
+https://jbossas.jboss.org/downloads
+
+We need to java to get installed on ubuntu
+--------------------------------------------
+We have installed openjdk
+
+/usr/lib/jvm/java-14-openjdk-amd64
+
+https://medium.com/@rohancbandara/install-openjdk-and-set-java-home-path-in-ubuntu-2ce2bc3a8fb2  ---> check this for installign and setting javahome
+
+Installation and Configuration
+-------------------------------
+useradd -d /home/jboss -s /bin/bash -m jboss
+passwd jboss
+
+Exporting jboss in .bashrc for jboss user
+-------------------------------------------
+export JBOSS_HOME=$HOME/jboss-7.1.1
+export JAVA_HOME=/usr/lib/jvm/java-14-openjdk-amd64
+
+Issue in starting jboss
+-------------------------
+https://stackoverflow.com/questions/12975357/error-could-not-create-the-java-virtual-machine-jboss7-as-server-startup-issue  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
