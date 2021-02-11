@@ -79,7 +79,10 @@ We have server-groups inside the domain.xml file where we have 2 server groups -
         </server-group>
     </server-groups>
 
-
-
+Ports
+--------
+ajp --> 8009
+http --> 8080
+https --> 8443
 
 
