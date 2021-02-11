@@ -124,4 +124,150 @@ Task
                 name: httpd
                 state: present
 
+-------------------------------------------------------------------
+The playbook is used to update name server entry into resolv.conf file on localhost. 
+The name server information is also updated in the inventory file as a variable nameserver_ip. Refer to the inventory file.
+
+-
+    name: 'Update nameserver entry into resolv.conf file on localhost'
+    hosts: localhost
+    tasks:
+        -
+            name: 'Update nameserver entry into resolv.conf file'
+            lineinfile:
+                path: /etc/resolv.conf
+                line: nameserver {{ nameserver_ip }}
+                
+------------------------------------------------------------------------------------------------------------------------------
+
+Ansible Variables
+We have added a new task to disable SNMP port in the playbook. However the port is hardcoded in the playbook. 
+Update the inventory file to add a new variable snmp_port and assign the value used here. Then update the playbook to use value from the variable.
+
+Playbook.yml
+--------------
+-
+    name: 'Update nameserver entry into resolv.conf file on localhost'
+    hosts: localhost
+    
+      
+    tasks:
+        -
+            name: 'Update nameserver entry into resolv.conf file'
+            lineinfile:
+                path: /etc/resolv.conf
+                line: 'nameserver {{ nameserver_ip }}'
+        -
+            name: 'Disable SNMP Port'
+            firewalld:
+                port: '{{ snmp_port }}'
+                permanent: true
+                state: disabled
+Inventory file
+
+#Sample Inventory File
+
+localhost ansible_connection=localhost nameserver_ip=10.1.250.10 snmp_port=160-161
+
+--------------------------------------------------------------------------------------------
+Display the var using debug
+
+---
+ - hosts: localhost
+   vars:
+    x: 45
+   gather_facts: false
+   tasks:
+    - debug: var=x
+
+-------------------------------
+
+Passing command line arguments for var x
+cmd.yml
+---
+ - hosts: localhost
+   gather_facts: false
+   tasks:
+    - debug: var=x
+
+ansible-playbook cmd.yml -e "x=20"
+ansible-playbook cmd.yml --extra-vars "x=20"  ---------> you can pass the values in both the ways like -e and --extra-vars
+ansible-playbook cmd_line.yml -e "{'x':34}"  ---------> this is scalar passing value type
+=============================================================================================
+
+Passing 2 values in palybook
+
+---
+ - hosts: localhost
+   gather_facts: false
+   tasks:
+    - debug:
+       msg:
+        - "the value is: {{x}}"
+        - "the value is: {{y}} " 
+        
+      ansible-plabook cmd.yml -e "x=30 y=40"
+      
+ ===============================================================================================
+ 
+ Passing the values from another yml file
+ 
+ 1. variables_values.yml
+ ---
+   x: 45
+   y: 100
+   
+   
+---
+ - hosts: localhost
+   gather_facts: false
+   tasks:
+    - debug:
+       msg:
+        - "the value is: {{x}}"
+        - "the value is: {{y}} " 
+        
+ansible-playbook -e "@variables_values.yml"
+
+oot@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook cmd_line.yml -e "@variables_values.yml"
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [localhost] *****************************************************************************************************************************
+
+TASK [debug] *********************************************************************************************************************************
+ok: [localhost] => {
+    "msg": [
+        "the value is: 45",
+        "the value is: 100 "
+    ]
+}
+
+PLAY RECAP ***********************************************************************************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+
+==========================================================================================================================
+
+Installing package and unnistalling the apache using present and absent thorugh passing the cmd line arguments
+
+
+---
+ - hosts: localhost
+   gather_facts: false
+   become: yes
+   tasks:
+    - name: install {{pkg}} 
+      apt:
+       name: "{{pkg}}"
+       state: "{{req_state}}"
+
+root@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook install_httpd.yml -e "pkg=apache2 req_state=absent"  --> uninstalles (since state is absent)
+root@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook install_httpd.yml -e "pkg=apache2 req_state=present"  --> installes (since state is present)
+
+
+
+
+
+
+
+
 
