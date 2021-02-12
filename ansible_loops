@@ -263,6 +263,156 @@ Installing package and unnistalling the apache using present and absent thorugh 
 root@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook install_httpd.yml -e "pkg=apache2 req_state=absent"  --> uninstalles (since state is absent)
 root@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook install_httpd.yml -e "pkg=apache2 req_state=present"  --> installes (since state is present)
 
+INCLUDE MODULE
+=================
+
+Use include module to add tasks to the playbook
+==========================================================
+Here we are adding the tasks to other yml file, the task1.yml file containes only the task
+1. task1.yml
+
+---
+ - name: Play 1 task 2
+   debug:
+    msg: play 1 task 2
+
+
+...           ---------------------> three dots indicate the end of yml file.
+
+2. include_tasks.yml
+
+---
+ - name: including tasks
+   hosts: localhost
+   gather_facts: false
+   tasks:
+    - name: play1 task1
+      debug:
+       msg: play1 task1
+    - include: task1.yml     -----------------------> we have included the task1.yml file inside the include_tasks.yml
+    
+ansible-playbook include_tasks.yml
+
+root@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook include_tasks.yml 
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [including tasks] ***********************************************************************************************************************
+
+TASK [play1 task1] ***************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "play1 task1"
+}
+
+TASK [Play 1 task 2] *************************************************************************************************************************
+ok: [localhost] => {
+    "msg": "play 1 task 2"
+}
+
+PLAY RECAP ***********************************************************************************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+
+====================================================================
+
+KNOW the information of modules
+---------------------------------
+
+ansible-doc -l -----> list of modules
+ansible-doc ping ----> information of hwo to use the modules and examples , its like man page for linux.
+
+2. Use include module to add one complete playbook into another
+=====================================================================
+[ansible@controller ~]$ cat play2.yml
+---
+ - name: Play 2
+   hosts: localhost
+   gather_facts: false
+   tasks:
+     - name: Play 2 - Task 1
+       debug:
+         msg: "Play 2 - Task 1"
+...
+
+Include playbook
+---
+ - name: including tasks
+   hosts: localhost
+   gather_facts: false
+   tasks:
+    - name: play1 task1
+      debug:
+       msg: play1 task1
+    - include: task1.yml     -----------------------> we have included the task1.yml (which contians the task only inside task1.yml)
+ - include: play2.yml        -----------------------> here it is entire a new playbook named play2.yml
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
