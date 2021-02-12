@@ -264,6 +264,8 @@ root@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook install_httpd.yml -e 
 root@srinivas-Inspiron-3521:/etc/ansible# ansible-playbook install_httpd.yml -e "pkg=apache2 req_state=present"  --> installes (since state is present)
 
 INCLUDE MODULE
+<span style="color: green"> INCLUDE MODULE </span>
+
 =================
 
 Use include module to add tasks to the playbook
@@ -343,8 +345,22 @@ Include playbook
        msg: play1 task1
     - include: task1.yml     -----------------------> we have included the task1.yml (which contians the task only inside task1.yml)
  - include: play2.yml        -----------------------> here it is entire a new playbook named play2.yml
- 
 
++================================================================== 
+Here in the above example include is deprecated, so we need to use import_tasks for task import and import_playbook must be used as below  :::
+
+---
+ - name: import playbook
+   hosts: localhost
+   gather_facts: false
+   tasks:
+    - name: play1 task1
+      debug:
+       msg: play1 task1
+    - import_tasks: task1.yml
+ - import_playbook: play2.yml
+ 
+ ================================================================================================================================
 
 
 
