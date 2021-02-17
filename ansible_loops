@@ -362,6 +362,86 @@ Here in the above example include is deprecated, so we need to use import_tasks 
  
  ================================================================================================================================
 
+ANSIBLE ROLES
+--------------
+
+WE have ansible-galaxy community for the roles we want to define or create or init
+
+ansible-galaxy init testrole  -------------> this is the role name testrole created , 
+
+Community where we can download the roles directly and use, by using so we get all the required the folders and etc, created 
+
+===============================================
+https://galaxy.ansible.com/geerlingguy/docker |
+                                              |
+https://galaxy.ansible.com/community          |
+===============================================
+
+Commands
+---------
+1. Creating the role 
+ansible-galaxy init <role-name>
+
+2. Checking the list of roles
+ansible-galaxy list
+ 
+It checks the roles and give the path of roles created by default
+
+root@srinivas-Inspiron-3521:/etc/ansible/roles# ansible-galaxy list
+# /root/.ansible/roles
+- geerlingguy.docker, 3.0.0
+# /etc/ansible/roles
+- role1, (unknown version)
+[WARNING]: - the configured path /usr/share/ansible/roles does not exist.
+
+3. Checking the ansible config options
+ansible-config list
+ansible-config dump | grep -i roles        ---> it gives the default path of roles created
+
+oot@srinivas-Inspiron-3521:/etc/ansible/roles# ansible-config dump | grep -i roles
+DEFAULT_ROLES_PATH(default) = ['/root/.ansible/roles', '/usr/share/ansible/roles', '/etc/ansible/roles']
+
+ansible-config dump | grep -i inventory
+
+root@srinivas-Inspiron-3521:/etc/ansible/roles# ansible-config dump | grep -i inventory
+DEFAULT_INVENTORY_PLUGIN_PATH(default) = ['/root/.ansible/plugins/inventory', '/usr/share/ansible/plugins/inventory']
+INVENTORY_ANY_UNPARSED_IS_FAILED(default) = False
+INVENTORY_CACHE_ENABLED(default) = False
+INVENTORY_CACHE_PLUGIN(default) = None
+INVENTORY_CACHE_PLUGIN_CONNECTION(default) = None
+INVENTORY_CACHE_PLUGIN_PREFIX(default) = ansible_facts
+INVENTORY_CACHE_TIMEOUT(default) = 3600
+INVENTORY_ENABLED(default) = ['host_list', 'script', 'auto', 'yaml', 'ini', 'toml']
+INVENTORY_EXPORT(default) = False
+INVENTORY_IGNORE_EXTS(default) = {{(BLACKLIST_EXTS + ( '.orig', '.ini', '.cfg', '.retry'))}}
+INVENTORY_IGNORE_PATTERNS(default) = []
+INVENTORY_UNPARSED_IS_FAILED(default) = False
+VARIABLE_PRECEDENCE(default) = ['all_inventory', 'groups_inventory', 'all_plugins_inventory', 'all_plugins_play', 'groups_plugins_inventory', 'groups_plugins_play']
+
+4.Checing the ansible configuration file
+ansible-config view
+
+5. To create a role inside the /etc/ansible/roles (or) any desired location 
+ansible-galaxy install singleplatform-eng.users -p ./roles  ---> it will create the roles under the ./roles directory
+
+root@srinivas-Inspiron-3521:/etc/ansible# ansible-galaxy list
+# /root/.ansible/roles
+- geerlingguy.docker, 3.0.0
+# /etc/ansible/roles             
+- role1, (unknown version)
+- singleplatform-eng.users, v1.2.6          --------> it is installed in /etc/ansible/roles directory since we have given the command -p ./roles
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
