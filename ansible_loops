@@ -431,89 +431,53 @@ root@srinivas-Inspiron-3521:/etc/ansible# ansible-galaxy list
 - role1, (unknown version)
 - singleplatform-eng.users, v1.2.6          --------> it is installed in /etc/ansible/roles directory since we have given the command -p ./roles
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+===============================================================================================================================================================
+If you have three tasks in one playbook and you want to execute the 1st and 2nd on the local machine and the 3rd on the node, how can you do it ??
+
+ANSWER
+-----------
+---
+- hosts: webservers
+  serial: 5      -----------> how many hosts ansible must manage a single time
+
+  tasks:
+    - name: Take out of load balancer pool
+      ansible.builtin.command: /usr/bin/take_out_of_pool {{ inventory_hostname }}
+      delegate_to: 127.0.0.1                ----------------------------> run on the local machine
+
+    - name: Actual steps would go here
+      ansible.builtin.yum:
+        name: acme-web-stack
+        state: latest
+
+    - name: Add back to load balancer pool
+      ansible.builtin.command: /usr/bin/add_back_to_pool {{ inventory_hostname }}
+      delegate_to: 127.0.0.1
+      
+-------------------------------------------------------------------------------------------------------
+---
+# ...
+
+  tasks:
+    - name: Take out of load balancer pool
+      local_action: ansible.builtin.command /usr/bin/take_out_of_pool {{ inventory_hostname }}
+
+# ...
+
+    - name: Add back to load balancer pool
+      local_action: ansible.builtin.command /usr/bin/add_back_to_pool {{ inventory_hostname }}
+
+======================================================================================================================================
+Serial --> how many hosts ansible must manage at a single time to execute
+
+---
+- name: test play
+  hosts: webservers
+  serial: 2
+  gather_facts: False
+
+  tasks:
+    - name: first task
+      command: hostname
+    - name: second task
+      command: hostname
