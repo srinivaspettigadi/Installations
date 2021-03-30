@@ -481,3 +481,34 @@ Serial --> how many hosts ansible must manage at a single time to execute
       command: hostname
     - name: second task
       command: hostname
+=======================================================================================================================================
+Checking the disk space in linux
+
+---
+- name: Check disk space usage
+  hosts: all
+  tasks:
+     - name: Check disk space usage on servers
+       shell: df -Th
+       register: result
+      - debug:
+          var: result.stdout_lines
+        when: ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+ =======================================================================================================================================
+ 
+ When condition like ( if matches the os version execute)
+ 
+ ---
+- name: install Apache Web-Server
+  hosts: all
+  tasks:
+    - name: Install Apache on CentOS  Server
+      yum: name=httpd  state=present
+      become: yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Apache on Ubuntu Server
+      apt:name=apache2 state=present
+      become: yes
+      when: ansible_os_family == "Debian"
+        
